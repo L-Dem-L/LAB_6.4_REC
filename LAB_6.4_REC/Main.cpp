@@ -2,14 +2,14 @@
 #include <iomanip>
 #include <cmath>
 
-void fillArrayRecursive(double* arr, int size, int index) {
+void fillArrayRecursive(double* arr, int size, int index = 0) {
     if (index < size) {
         std::cin >> arr[index];
         fillArrayRecursive(arr, size, index + 1);
     }
 }
 
-void printArrayRecursive(const double* arr, int size, int index) {
+void printArrayRecursive(const double* arr, int size, int index = 0) {
     if (index < size) {
         std::cout << std::setw(8) << std::fixed << std::setprecision(2) << arr[index] << " ";
         printArrayRecursive(arr, size, index + 1);
@@ -19,7 +19,7 @@ void printArrayRecursive(const double* arr, int size, int index) {
     }
 }
 
-int countZerosRecursive(const double* arr, int size, int index) {
+int countZerosRecursive(const double* arr, int size, int index = 0) {
     if (index < size) {
         return (arr[index] == 0) + countZerosRecursive(arr, size, index + 1);
     }
@@ -34,26 +34,24 @@ double sumAfterMinRecursive(const double* arr, int size, int currentIndex, doubl
         }
         return sumAfterMinRecursive(arr, size, currentIndex + 1, minElement, minIndex);
     }
+    else if (minIndex + 1 < size) {
+        return arr[minIndex + 1] + sumAfterMinRecursive(arr, size, currentIndex, minElement, minIndex + 1);
+    }
     else {
-        double sum = 0.0;
-        for (int i = minIndex + 1; i < size; i++) {
-            sum += arr[i];
-        }
-        return sum;
+        return 0.0;
     }
 }
 
-void sortOddElementsRecursive(double* arr, int size, int i, int j) {
-    if (i < size) {
-        if (j < size) {
-            if (std::abs(arr[i]) > std::abs(arr[j])) {
-                std::swap(arr[i], arr[j]);
+void sortOddElementsRecursive(double* arr, int size, int i = 0) {
+    if (i < size - 1) {
+        if (static_cast<int>(arr[i]) % 2 != 0) {
+            for (int j = i + 1; j < size; j++) {
+                if (static_cast<int>(arr[j]) % 2 != 0 && std::abs(arr[i]) > std::abs(arr[j])) {
+                    std::swap(arr[i], arr[j]);
+                }
             }
-            sortOddElementsRecursive(arr, size, i, j + 2);
         }
-        else {
-            sortOddElementsRecursive(arr, size, i + 2, i + 4);
-        }
+        sortOddElementsRecursive(arr, size, i + 1);
     }
 }
 
@@ -70,19 +68,18 @@ int main() {
 
     double* arr = new double[size];
 
-    fillArrayRecursive(arr, size, 0);
-    printArrayRecursive(arr, size, 0);
+    fillArrayRecursive(arr, size);
+    printArrayRecursive(arr, size);
 
-    std::cout << "1.1. Number of elements equal to zero: " << countZerosRecursive(arr, size, 0) << std::endl;
+    std::cout << "1.1. Number of elements equal to zero: " << countZerosRecursive(arr, size) << std::endl;
 
-    double sumAfterMinResult = sumAfterMinRecursive(arr, size, 1, arr[0], 0);
-    std::cout << "1.2. Sum of elements after the minimum element: " << std::fixed << std::setprecision(2)
-        << sumAfterMinResult << std::endl;
+    double sumAfterMinResult = sumAfterMinRecursive(arr, size, 0, arr[0], 0);
+    std::cout << "1.2 Sum of elements after min element: " << sumAfterMinResult << std::endl;
 
-    sortOddElementsRecursive(arr, size, 0, 2);
+    sortOddElementsRecursive(arr, size);
 
     std::cout << "Modified Array: ";
-    printArrayRecursive(arr, size, 0);
+    printArrayRecursive(arr, size);
 
     delete[] arr;
 

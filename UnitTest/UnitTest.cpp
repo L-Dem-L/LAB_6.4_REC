@@ -18,12 +18,12 @@ namespace UnitTest
 
 			// Act
 			int zerosCount = countZerosRecursive(arr, size, 0);
-			double sumAfterMinResult = sumAfterMinRecursive(arr, size, 1, arr[0], 0);
+			double sumAfterMinResult = sumAfterMinRecursive(arr, size, 0, arr[0], 0);
 
 			// Sorting odd elements
 			double sortedArr[size];
 			std::copy(arr, arr + size, sortedArr);
-			sortOddElementsRecursive(sortedArr, size, 0, 2);
+			sortOddElementsRecursive(sortedArr, size, 0);
 
 			// Assert
 			Assert::AreEqual(1, zerosCount);
