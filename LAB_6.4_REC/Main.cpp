@@ -42,15 +42,27 @@ double sumAfterMinRecursive(const double* arr, int size, int currentIndex, doubl
     }
 }
 
-void sortOddElementsRecursive(double* arr, int size, int i = 0) {
+void swapArray(double* arr, int size, int i, int j) {
+    if (j < size) {
+        if (static_cast<int>(arr[j]) % 2 != 0 && std::abs(arr[i]) > std::abs(arr[j])) {
+            std::swap(arr[i], arr[j]);
+        }
+        swapArray(arr, size, i, j + 1);
+    }
+}
+
+void sortOddElementsHelper(double* arr, int size, int i, int j) {
     if (i < size - 1) {
         if (static_cast<int>(arr[i]) % 2 != 0) {
-            for (int j = i + 1; j < size; j++) {
-                if (static_cast<int>(arr[j]) % 2 != 0 && std::abs(arr[i]) > std::abs(arr[j])) {
-                    std::swap(arr[i], arr[j]);
-                }
-            }
+            swapArray(arr, size, i, i+1);
         }
+        sortOddElementsHelper(arr, size, i + 1, 0);
+    }
+}
+
+void sortOddElementsRecursive(double* arr, int size, int i = 0) {
+    if (i < size - 1) {
+        sortOddElementsHelper(arr, size, i, i + 1);
         sortOddElementsRecursive(arr, size, i + 1);
     }
 }
